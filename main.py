@@ -3,14 +3,22 @@ import asyncio
 import time
 
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 app = FastAPI()
 
 
 class CalculateRequest(BaseModel):
-    numbers: list[int]
-    delays: list[float] = Field(min_length=1)
+    numbers: list[int] = Field(min_length=1, max_length=100)
+    delays: list[float] = Field(min_length=1, max_length=100)
+
+    @field_validator("delays")
+    @classmethod
+    def validate_delays(cls, delays: list[float]) -> list[float]:
+        if any(delay < 0 or delay > 10 for delay in delays):
+            raise ValueError("Задержка должна быть от 0 до 10 секунд")
+
+        return delays
 
 
 class CalculateResult(BaseModel):
@@ -45,12 +53,6 @@ async def calculate(data: CalculateRequest) -> CalculateResponse:
         raise HTTPException(
             status_code=400,
             detail="Количество чисел и задержек должно совпадать",
-        )
-
-    if any(delay < 0 for delay in data.delays):
-        raise HTTPException(
-            status_code=400,
-            detail="Задержка не может быть отрицательной",
         )
 
     start = time.perf_counter()

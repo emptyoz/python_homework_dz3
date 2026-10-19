@@ -25,3 +25,40 @@ Content-Type: application/json
   "numbers": [5, 10],
   "delays": [1]
 }
+
+
+### Отрицательная задержка
+POST http://127.0.0.1:8000/calculate/
+Content-Type: application/json
+
+{
+    "numbers": [5],
+    "delays" : [-1]
+}
+
+### Неверный тип данных
+POST http://127.0.0.1:8000/calculate/
+Content-Type: application/json
+
+{
+    "numbers": ["hello", 5],
+    "delays": [1, 4]
+}
+
+### Слишком большой delay
+POST http://127.0.0.1:8000/calculate/
+Content-Type: application/json
+
+{
+    "numbers": [6, 5],
+    "delays": [1000000000000000000000000000000000000000000000000000000, 4]
+}
+
+### Пустые входные данные
+POST http://127.0.0.1:8000/calculate/
+Content-Type: application/json
+
+{
+    "numbers": [],
+    "delays": []
+}
