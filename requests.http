@@ -1,0 +1,27 @@
+
+### Обычный запрос
+POST http://127.0.0.1:8000/calculate/
+Content-Type: application/json
+
+{
+  "numbers": [5, 3, 10],
+  "delays": [1, 2, 0.5]
+}
+
+### Одинаковые задержки
+POST http://127.0.0.1:8000/calculate/
+Content-Type: application/json
+
+{
+  "numbers": [2, 4, 6],
+  "delays": [1, 1, 1]
+}
+
+### Разное количество чисел и задержек
+POST http://127.0.0.1:8000/calculate/
+Content-Type: application/json
+
+{
+  "numbers": [5, 10],
+  "delays": [1]
+}
